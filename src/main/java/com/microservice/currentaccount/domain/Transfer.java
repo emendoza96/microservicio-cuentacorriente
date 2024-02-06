@@ -1,5 +1,10 @@
 package com.microservice.currentaccount.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "transfer")
 public class Transfer extends PaymentMethod {
 
     private String originCBU;

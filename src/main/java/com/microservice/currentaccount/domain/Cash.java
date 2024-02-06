@@ -1,5 +1,10 @@
 package com.microservice.currentaccount.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "cash")
 public class Cash extends PaymentMethod {
 
     private Integer receiptNumber;
