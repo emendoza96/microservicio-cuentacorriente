@@ -68,7 +68,7 @@ public class PaymentController {
             return ResponseEntity.status(200).body(payment);
         } catch (NoSuchElementException e) {
             System.err.println(e.getMessage());
-            return ResponseEntity.status(204).build();
+            return ResponseEntity.status(404).build();
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return ResponseEntity.badRequest().build();
