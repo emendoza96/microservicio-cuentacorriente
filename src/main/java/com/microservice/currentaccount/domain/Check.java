@@ -2,7 +2,7 @@ package com.microservice.currentaccount.domain;
 
 import java.time.Instant;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 @Entity
 public class Check extends PaymentMethod {

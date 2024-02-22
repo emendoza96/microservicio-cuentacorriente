@@ -1,6 +1,6 @@
 package com.microservice.currentaccount.domain;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 @Entity
 public class Cash extends PaymentMethod {

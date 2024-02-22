@@ -5,16 +5,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.microservice.currentaccount.domain.Payment;
 import com.microservice.currentaccount.service.PaymentService;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import javax.transaction.Transactional;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,19 +28,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/payment")
-@ApiOperation(value = "PaymentRest")
+@Tag(name = "PaymentRest")
 public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
 
     @GetMapping()
-    @ApiOperation(value = "Get all payments")
+    @Operation(summary = "Get all payments")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "All payments successfully retrieved"),
-        @ApiResponse(code = 401, message = "Not authorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Payment not found")
+        @ApiResponse(responseCode = "200", description = "All payments successfully retrieved"),
+        @ApiResponse(responseCode = "401", description = "Not authorized"),
+        @ApiResponse(responseCode = "403", description = "Forbidden"),
+        @ApiResponse(responseCode = "404", description = "Payment not found")
     })
     public ResponseEntity<List<Payment>> getAllPayments() {
 
@@ -54,12 +54,12 @@ public class PaymentController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get payment by id")
+    @Operation(summary = "Get payment by id")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Payment successfully retrieved"),
-        @ApiResponse(code = 401, message = "Not authorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Payment not found")
+        @ApiResponse(responseCode = "200", description = "Payment successfully retrieved"),
+        @ApiResponse(responseCode = "401", description = "Not authorized"),
+        @ApiResponse(responseCode = "403", description = "Forbidden"),
+        @ApiResponse(responseCode = "404", description = "Payment not found")
     })
     public ResponseEntity<Payment> getPaymentById(@PathVariable Integer id) {
 
@@ -77,12 +77,12 @@ public class PaymentController {
     }
 
     @GetMapping("/customer/{cuit}")
-    @ApiOperation(value = "Get payments by customer cuit")
+    @Operation(summary = "Get payments by customer cuit")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Payments successfully retrieved"),
-        @ApiResponse(code = 401, message = "Not authorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Payment not found")
+        @ApiResponse(responseCode = "200", description = "Payments successfully retrieved"),
+        @ApiResponse(responseCode = "401", description = "Not authorized"),
+        @ApiResponse(responseCode = "403", description = "Forbidden"),
+        @ApiResponse(responseCode = "404", description = "Payment not found")
     })
     public ResponseEntity<List<Payment>> getPaymentsByCustomerCuit(@PathVariable String cuit) {
 
@@ -97,11 +97,11 @@ public class PaymentController {
 
     @Transactional
     @PostMapping()
-    @ApiOperation(value = "Create a new payment")
+    @Operation(summary = "Create a new payment")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Payment successfully created"),
-        @ApiResponse(code = 401, message = "Not authorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
+        @ApiResponse(responseCode = "200", description = "Payment successfully created"),
+        @ApiResponse(responseCode = "401", description = "Not authorized"),
+        @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
     public ResponseEntity<Payment> savePayment(@RequestBody Payment payment) {
 
