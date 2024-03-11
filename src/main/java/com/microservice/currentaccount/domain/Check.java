@@ -3,12 +3,20 @@ package com.microservice.currentaccount.domain;
 import java.time.Instant;
 
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Check extends PaymentMethod {
 
+    @NotNull
     private Integer checkNumber;
+
+    @NotNull
     private Instant paymentDate;
+
+    @NotNull
+    @Size(min = 2, max = 64)
     private String bankName;
 
     public Check() {}

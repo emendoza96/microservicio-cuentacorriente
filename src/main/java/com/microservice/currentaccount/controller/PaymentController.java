@@ -3,6 +3,8 @@ package com.microservice.currentaccount.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.microservice.currentaccount.domain.Payment;
+import com.microservice.currentaccount.error.ErrorDetail;
+import com.microservice.currentaccount.error.ErrorResponse;
 import com.microservice.currentaccount.service.PaymentService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +17,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,14 +46,16 @@ public class PaymentController {
         @ApiResponse(responseCode = "403", description = "Forbidden"),
         @ApiResponse(responseCode = "404", description = "Payment not found")
     })
-    public ResponseEntity<List<Payment>> getAllPayments() {
+    public ResponseEntity<?> getAllPayments() {
 
         try {
             List<Payment> payments = paymentService.getAllPayments();
-            return ResponseEntity.status(200).body(payments);
+            return ResponseEntity.ok().body(payments);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            ErrorDetail errorDetails = new ErrorDetail();
+            errorDetails.setCode(HttpStatus.BAD_REQUEST.value());
+            errorDetails.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(new ErrorResponse(errorDetails));
         }
     }
 
@@ -61,17 +67,18 @@ public class PaymentController {
         @ApiResponse(responseCode = "403", description = "Forbidden"),
         @ApiResponse(responseCode = "404", description = "Payment not found")
     })
-    public ResponseEntity<Payment> getPaymentById(@PathVariable Integer id) {
+    public ResponseEntity<?> getPaymentById(@PathVariable Integer id) {
 
         try {
             Payment payment = paymentService.getPaymentById(id).orElseThrow();
             return ResponseEntity.status(200).body(payment);
         } catch (NoSuchElementException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            ErrorDetail errorDetails = new ErrorDetail();
+            errorDetails.setCode(HttpStatus.BAD_REQUEST.value());
+            errorDetails.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(new ErrorResponse(errorDetails));
         }
 
     }
@@ -84,14 +91,16 @@ public class PaymentController {
         @ApiResponse(responseCode = "403", description = "Forbidden"),
         @ApiResponse(responseCode = "404", description = "Payment not found")
     })
-    public ResponseEntity<List<Payment>> getPaymentsByCustomerCuit(@PathVariable String cuit) {
+    public ResponseEntity<?> getPaymentsByCustomerCuit(@PathVariable String cuit) {
 
         try {
             List<Payment> payments = paymentService.getPaymentsByCustomerCuit(cuit);
-            return ResponseEntity.status(200).body(payments);
+            return ResponseEntity.ok().body(payments);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            ErrorDetail errorDetails = new ErrorDetail();
+            errorDetails.setCode(HttpStatus.BAD_REQUEST.value());
+            errorDetails.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(new ErrorResponse(errorDetails));
         }
     }
 
@@ -103,14 +112,16 @@ public class PaymentController {
         @ApiResponse(responseCode = "401", description = "Not authorized"),
         @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    public ResponseEntity<Payment> savePayment(@RequestBody Payment payment) {
+    public ResponseEntity<?> savePayment(@Valid @RequestBody Payment payment) {
 
         try {
             Payment newPayment = paymentService.createPayment(payment);
-            return ResponseEntity.status(200).body(newPayment);
+            return ResponseEntity.ok().body(newPayment);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            ErrorDetail errorDetails = new ErrorDetail();
+            errorDetails.setCode(HttpStatus.BAD_REQUEST.value());
+            errorDetails.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(new ErrorResponse(errorDetails));
         }
     }
 
