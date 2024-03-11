@@ -1,5 +1,8 @@
 package com.microservice.currentaccount.domain;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
@@ -12,6 +15,12 @@ import jakarta.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "method_type", discriminatorType = DiscriminatorType.STRING)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "method_type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = Cash.class, name = "cash"),
+    @JsonSubTypes.Type(value = Check.class, name = "check"),
+    @JsonSubTypes.Type(value = Transfer.class, name = "transfer"),
+})
 public abstract class PaymentMethod {
 
     @Id
