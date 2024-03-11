@@ -1,12 +1,21 @@
 package com.microservice.currentaccount.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Transfer extends PaymentMethod {
 
+    @NotNull
+    @Size(min = 16, max = 32)
     private String originCBU;
+
+    @NotNull
+    @Size(min = 16, max = 32)
     private String destinyCBU;
+
+    @NotNull
     private long transferCode;
 
     public Transfer() {}

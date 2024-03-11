@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -31,6 +32,7 @@ public class Payment {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "method_id")
     @NotNull
+    @Valid
     private PaymentMethod method;
 
     public Payment() {}
